@@ -35,15 +35,18 @@
         </div>
 
         <div class="movie-property">
-            <p th:text="'Genre: ' + ${movie.genre}">
-        </div>
-
-        <div class="movie-property">
             <p th:text="'Language: ' + ${movie.language}"></p>
         </div>
 
         <div class="movie-property">
             <p th:text="'Director: ' + ${movie.director.firstName}"></p>
+        </div>
+
+        <div class="movie-property">
+            <h4>Genres:</h4>
+            <ul>
+                <li th:each="genre : ${movie.genres}" th:text="${genre.name}"></li>
+            </ul>
         </div>
 
 

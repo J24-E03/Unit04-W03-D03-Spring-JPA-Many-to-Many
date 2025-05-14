@@ -1,6 +1,7 @@
 package com.dci.full_mvc.controller;
 
 import com.dci.full_mvc.model.Director;
+import com.dci.full_mvc.model.Genre;
 import com.dci.full_mvc.model.Movie;
 import com.dci.full_mvc.repository.DirectorRepository;
 import com.dci.full_mvc.repository.GenreRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -53,13 +55,18 @@ public class MovieController {
     @PostMapping("/create")
     public String createNewMovie(@ModelAttribute Movie movie, @RequestParam List<Long> genreIds){
 
-        System.out.println(genreIds);
+
 
 //        validation for the director
         Director director = directorRepository.findById(movie.getDirector().getDirectorId())
                         .orElseThrow(()->new RuntimeException("Director with Id not found"));
 
         movie.setDirector(director);
+
+
+//        setting the genres:
+        List<Genre> genres = genreRepository.findAllById(genreIds);
+        movie.setGenres(genres);
 
         Movie createdMovie = movieRepository.save(movie);
 

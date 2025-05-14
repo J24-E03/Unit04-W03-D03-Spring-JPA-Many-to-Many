@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie,Long> {
 
-    List<Movie> findByGenreNot(String genreName);
+//    List<Movie> findByGenreNot(String genreName);
 
     List<Movie> findByReleaseYearBetween(int start, int end);
 

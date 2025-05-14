@@ -20,7 +20,6 @@ public class Movie {
     private String title;
     private int releaseYear;
     private int duration;
-    private String genre;
     private String language;
     private boolean wonOscars;
 
