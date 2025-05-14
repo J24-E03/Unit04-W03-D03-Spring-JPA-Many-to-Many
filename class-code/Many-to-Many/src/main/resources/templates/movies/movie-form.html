@@ -80,11 +80,11 @@
 
                 <div>
                     <label for="genre">Director: </label>
-                    <select th:field="*{director}" id="genre" required>
-                        <option value="">Select a Director</option>
-                        <option th:each="director : ${directors}"
-                                th:text="${director.firstName} + ' ' + ${director.lastName}"
-                                th:value="${director.directorId}"
+                    <select name="genreIds" id="genre" required multiple>
+                        <option value="">Select a Genre</option>
+                        <option th:each="genre : ${genres}"
+                                th:text="${genre.name}"
+                                th:value="${genre.genreId}"
                         ></option>
                     </select>
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -50,7 +51,9 @@ public class MovieController {
     }
 
     @PostMapping("/create")
-    public String createNewMovie(@ModelAttribute Movie movie, Model model){
+    public String createNewMovie(@ModelAttribute Movie movie, @RequestParam List<Long> genreIds){
+
+        System.out.println(genreIds);
 
 //        validation for the director
         Director director = directorRepository.findById(movie.getDirector().getDirectorId())
@@ -97,7 +100,10 @@ public class MovieController {
     }
 
     @PostMapping("/omar")
-    public String omarRoute(@RequestParam String name){
+    public String omarRoute(@RequestParam String name, @RequestParam String occupation){
         System.out.println(name);
+        System.out.println(occupation);
+
+        return "redirect:/movies";
     }
 }
