@@ -3,6 +3,7 @@ package com.dci.full_mvc.controller;
 import com.dci.full_mvc.model.Director;
 import com.dci.full_mvc.model.Movie;
 import com.dci.full_mvc.repository.DirectorRepository;
+import com.dci.full_mvc.repository.GenreRepository;
 import com.dci.full_mvc.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class MovieController {
 
     private final MovieRepository movieRepository;
     private final DirectorRepository directorRepository;
+    private final GenreRepository genreRepository;
 
 
     @GetMapping
@@ -42,6 +44,7 @@ public class MovieController {
 
         model.addAttribute("movie", new Movie());
         model.addAttribute("directors",directorRepository.findAll());
+        model.addAttribute("genres",genreRepository.findAll());
 
         return "movies/movie-form";
     }
@@ -91,5 +94,10 @@ public class MovieController {
         movieRepository.deleteById(id);
 
         return "redirect:/movies";
+    }
+
+    @PostMapping("/omar")
+    public String omarRoute(@RequestParam String name){
+        System.out.println(name);
     }
 }
