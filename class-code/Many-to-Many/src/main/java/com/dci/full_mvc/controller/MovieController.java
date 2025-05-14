@@ -6,6 +6,7 @@ import com.dci.full_mvc.model.Movie;
 import com.dci.full_mvc.repository.DirectorRepository;
 import com.dci.full_mvc.repository.GenreRepository;
 import com.dci.full_mvc.repository.MovieRepository;
+import com.dci.full_mvc.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ public class MovieController {
     private final MovieRepository movieRepository;
     private final DirectorRepository directorRepository;
     private final GenreRepository genreRepository;
+    private final MovieService movieService;
 
 
     @GetMapping
@@ -35,9 +37,7 @@ public class MovieController {
 
     @GetMapping("/{id}")
     public String getMovieById(@PathVariable Long id,Model model){
-        Movie foundMovie = movieRepository.findById(id)
-                        .orElseThrow(()->new RuntimeException("Movie not found"));
-        model.addAttribute("movie",foundMovie);
+        model.addAttribute("movie",movieService.findById(id));
         return "movies/movie-details";
     }
 
@@ -54,30 +54,14 @@ public class MovieController {
 
     @PostMapping("/create")
     public String createNewMovie(@ModelAttribute Movie movie, @RequestParam List<Long> genreIds){
-
-
-
-//        validation for the director
-        Director director = directorRepository.findById(movie.getDirector().getDirectorId())
-                        .orElseThrow(()->new RuntimeException("Director with Id not found"));
-
-        movie.setDirector(director);
-
-
-//        setting the genres:
-        List<Genre> genres = genreRepository.findAllById(genreIds);
-        movie.setGenres(genres);
-
-        Movie createdMovie = movieRepository.save(movie);
-
+        Movie createdMovie = movieService.createMovie(movie,genreIds);
         return "redirect:/movies/" + createdMovie.getId();
     }
 
     @GetMapping("/update/{id}")
     public String updateMovieForm(@PathVariable Long id, Model model){
-        Movie foundMovie = movieRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Movie Not Found"));
-        model.addAttribute("movie",foundMovie);
+
+        model.addAttribute("movie",movieService.findById(id));
         model.addAttribute("directors",directorRepository.findAll());
 
         return "movies/movie-form";
@@ -85,16 +69,7 @@ public class MovieController {
 
     @PostMapping("/update/{id}")
     public String updateMovie(@ModelAttribute Movie movie){
-        System.out.println(movie);
-        //        validation for the director
-        Director director = directorRepository.findById(movie.getDirector().getDirectorId())
-                .orElseThrow(()->new RuntimeException("Director with Id not found"));
-
-        movie.setDirector(director);
-
-
-        movieRepository.save(movie);
-
+       movieService.updateMovie(movie);
         return "redirect:/movies/" + movie.getId();
     }
 
